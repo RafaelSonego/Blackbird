@@ -9,7 +9,7 @@ on:
 
 env:
   DOTNET_VERSION: "6.0.x"
-  WEPAPP_NAME: "blackbirdsky"
+  WEBAPP_NAME: "blackbirdsky"
 
 jobs:
   build:
