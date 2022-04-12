@@ -28,3 +28,9 @@ jobs:
           dotnet build -c Release --no-restore
           dotnet test
           dotnet publish -c Release -o ./out
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print test
+        run: echo "Hello Deployment!"
