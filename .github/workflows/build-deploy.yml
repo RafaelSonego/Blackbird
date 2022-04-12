@@ -56,5 +56,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.WEBAPP_NAME }}
-          package: "${{ env.PUB_LOCATION }}/out"
+          package: ./out
 
