@@ -55,5 +55,6 @@ jobs:
       - name: Deploy to Azure
         uses: azure/webapps-deploy@v2
         with:
-          app_name: ${{env.WEPAPP_NAME}}
-          package: ./out
+          app-name: ${{ env.WEBAPP_NAME }}
+          package: "${{ env.PUB_LOCATION }}/out"
+
