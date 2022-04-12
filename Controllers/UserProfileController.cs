@@ -8,7 +8,7 @@ public class UserProfileController : Controller
 {
     private readonly ILogger<UserProfileController> _logger;
 
-    public HomeController(ILogger<UserProfileController> logger)
+    public UserProfileController(ILogger<UserProfileController> logger)
     {
         _logger = logger;
     }

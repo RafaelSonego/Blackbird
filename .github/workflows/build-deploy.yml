@@ -1,0 +1,59 @@
+name: build and deploy demo
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: "6.0.x"
+  WEPAPP_NAME: "blackbirdsky"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v3
+
+      - name: install dotnet
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+
+      - name: build and test
+        run: |
+          dotnet restore
+          dotnet build -c Release --no-restore
+          dotnet test
+          dotnet publish -c Release -o ./out
+
+      - name: upload to GitHub
+        uses: actions/upload-artifact@v1
+        with:
+          name: "app"
+          path: "./out"
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: download app
+        uses: actions/download-artifact@v1
+        with:
+          name: "app"
+          path: "./out"
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: $"{{secrets.AZURE_CREDENTIALS}}"
+
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app_name: ${{env.WEPAPP_NAME}}
+          package: ./out
