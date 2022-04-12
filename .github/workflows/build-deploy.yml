@@ -1,0 +1,30 @@
+name: build and deploy demo
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: "6.0.x"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v3
+
+      - name: install dotnet
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{env.DOTNET_VERSION}}
+
+      - name: build and test
+        run: |
+          dotnet restore
+          dotnet build -c Release --no-restore
+          dotnet test
+          dotnet publish -c Release -o ./out
